@@ -1,4 +1,5 @@
 test_sample
 
 # git 사용법을 정리한다. 
-# git 명령어 
+# git 간편 안내서
+  https://rogerdudler.github.io/git-guide/index.ko.html
