@@ -1,9 +1,8 @@
 import sys
-from PyQt5.QtWidgets import QApplication, QMainWindow, QAction, qApp
-from PyQt5.QtGui import QIcon
+from PyQt5.QtWidgets import QApplication, QWidget, QDesktopWidget
 
 
-class MyApp(QMainWindow):
+class MyApp(QWidget):
 
     def __init__(self):
         super().__init__()
@@ -12,19 +11,17 @@ class MyApp(QMainWindow):
 
     def initUI(self):
 
-        exitAction = QAction(QIcon('exit.png'), 'Exit', self)
-        exitAction.setShortcut('Ctrl+Q')
-        exitAction.setStatusTip('Exit application')
-        exitAction.triggered.connect(qApp.quit)
-
-        self.statusBar()
-
-        self.toolbar = self.addToolBar('Exit')
-        self.toolbar.addAction(exitAction)
-
-        self.setWindowTitle('Toolbar')
-        self.setGeometry(300, 300, 300, 200)
+        self.setWindowTitle('Centering')
+        self.resize(500, 350)
+        self.center()
         self.show()
+
+    def center(self):
+
+        qr = self.frameGeometry()
+        cp = QDesktopWidget().availableGeometry().center()
+        qr.moveCenter(cp)
+        self.move(qr.topLeft())
 
 
 if __name__ == '__main__':
