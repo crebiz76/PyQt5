@@ -46,6 +46,9 @@
     </rect>
    </property>
    <widget class="QMenu" name="menu_file">
+    <property name="contextMenuPolicy">
+     <enum>Qt::ActionsContextMenu</enum>
+    </property>
     <property name="title">
      <string>파일(F)</string>
     </property>

@@ -11,7 +11,7 @@ class WindowClass(QMainWindow, form_class):
 
         self.action_open.triggered.connect(self.openFunction)
         self.action_save.triggered.connect(self.saveFunction)
-                
+
     def openFunction(self):
         print("Open!!!")
     
