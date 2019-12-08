@@ -2,7 +2,13 @@ import sys
 from PyQt5.QtWidgets import *
 from PyQt5 import uic
 
-form_class = uic.loadUiType(r"C:\Users\crebi\Documents\GitHub\PyQt5\Designer\8_Notepad_PlainTextEdit\notepad.ui")[0]
+form_class = uic.loadUiType(r"C:\Users\crebi\Documents\GitHub\PyQt5\Designer\09_Notepad_Find\notepad.ui")[0]
+
+class FindWindow(QDialog):
+    def __init__(self, parent):
+        super(FindWindow, self).__init__(parent)
+        uic.loadUi(r"C:\Users\crebi\Documents\GitHub\PyQt5\Designer\09_Notepad_Find\find.ui", self)
+        self.show()
 
 class WindowClass(QMainWindow, form_class):
     def __init__(self):
@@ -19,8 +25,22 @@ class WindowClass(QMainWindow, form_class):
         self.action_copy.triggered.connect(self.copyFunction)
         self.action_paste.triggered.connect(self.pasteFunction)
 
+        self.action_find.triggered.connect(self.findFunction)
+
         self.opened = False
-        self.opened_filepath = ''
+        self.opened_filepath = '제목 없음'
+
+    def isChanged(self):
+        if not self.opened:
+            if self.plainTextEdit.toPlainText().strip():
+                return True
+            return False
+        current_data = self.plainTextEdit.toPlainText()
+        with open(self.opened_filepath, encoding = 'UTF8') as f:
+            file_data = f.read()
+
+        if current_data == file_data: return False
+        else: return True
 
     def save_changed_data(self):
         msgBox = QMessageBox()
@@ -29,14 +49,14 @@ class WindowClass(QMainWindow, form_class):
         msgBox.addButton("저장 안 함", QMessageBox.NoRole)
         msgBox.addButton("취소", QMessageBox.RejectRole)
         ret = msgBox.exec_()
-        if ret == 0: print("Yes Button")
-        elif ret == 1: print("No Button")
-        elif ret == 2: print("Cancel Button"); return ret
+        if ret == 0: self.saveFunction()
+        else: return ret
         
     def closeEvent(self, event):
-        ret = self.save_changed_data()
-        if ret == 2: event.ignore()
-        print("Close event")
+        if self.isChanged():
+            ret = self.save_changed_data()
+            if ret == 2: event.ignore()
+            print("Close event")
         
     def open_file(self, fname):
         with open(fname, encoding = 'UTF8') as f:
@@ -59,6 +79,9 @@ class WindowClass(QMainWindow, form_class):
         print("Save {}".format(fname))
     
     def openFunction(self):
+        if self.isChanged():
+            ret = self.save_changed_data()
+            
         fname = QFileDialog.getOpenFileName(self)
         if fname[0]:
             self.open_file(fname[0])
@@ -85,6 +108,9 @@ class WindowClass(QMainWindow, form_class):
 
     def pasteFunction(self):
         self.plainTextEdit.paste()
+
+    def findFunction(self):
+        FindWindow(self)
 
 app = QApplication(sys.argv)
 mainwindow = WindowClass()

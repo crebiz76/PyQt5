@@ -2,7 +2,7 @@ import sys
 from PyQt5.QtWidgets import *
 from PyQt5 import uic
 
-form_class = uic.loadUiType(r"C:\Users\crebi\Documents\GitHub\PyQt5\Designer\5_Notepad_SaveAs\notepad.ui")[0]
+form_class = uic.loadUiType(r"C:\Users\crebi\Documents\GitHub\PyQt5\Designer\07_Notepad_MessageBox\notepad.ui")[0]
 
 class WindowClass(QMainWindow, form_class):
     def __init__(self):
@@ -12,10 +12,27 @@ class WindowClass(QMainWindow, form_class):
         self.action_open.triggered.connect(self.openFunction)
         self.action_save.triggered.connect(self.saveFunction)
         self.action_saveAs.triggered.connect(self.saveAsFunction)
+        self.action_close.triggered.connect(self.close)
 
         self.opened = False
-        self.opened_filepath = ''        
+        self.opened_filepath = ''
 
+    def save_changed_data(self):
+        msgBox = QMessageBox()
+        msgBox.setText("변경내용을 {}에 저장하시겠습니까?".format(self.opened_filepath))
+        msgBox.addButton("저장", QMessageBox.YesRole)
+        msgBox.addButton("저장 안 함", QMessageBox.NoRole)
+        msgBox.addButton("취소", QMessageBox.RejectRole)
+        ret = msgBox.exec_()
+        if ret == 0: print("Yes Button")
+        elif ret == 1: print("No Button")
+        elif ret == 2: print("Cancel Button"); return ret
+        
+    def closeEvent(self, event):
+        ret = self.save_changed_data()
+        if ret == 2: event.ignore()
+        print("Close event")
+        
     def open_file(self, fname):
         with open(fname, encoding = 'UTF8') as f:
             data = f.read()

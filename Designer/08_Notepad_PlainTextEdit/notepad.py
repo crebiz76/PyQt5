@@ -2,13 +2,7 @@ import sys
 from PyQt5.QtWidgets import *
 from PyQt5 import uic
 
-form_class = uic.loadUiType(r"C:\Users\crebi\Documents\GitHub\PyQt5\Designer\9_Notepad_Find\notepad.ui")[0]
-
-class FindWindow(QDialog):
-    def __init__(self, parent):
-        super(FindWindow, self).__init__(parent)
-        uic.loadUi(r"C:\Users\crebi\Documents\GitHub\PyQt5\Designer\9_Notepad_Find\find.ui", self)
-        self.show()
+form_class = uic.loadUiType(r"C:\Users\crebi\Documents\GitHub\PyQt5\Designer\08_Notepad_PlainTextEdit\notepad.ui")[0]
 
 class WindowClass(QMainWindow, form_class):
     def __init__(self):
@@ -24,8 +18,6 @@ class WindowClass(QMainWindow, form_class):
         self.action_cut.triggered.connect(self.cutFunction)
         self.action_copy.triggered.connect(self.copyFunction)
         self.action_paste.triggered.connect(self.pasteFunction)
-
-        self.action_find.triggered.connect(self.findFunction)
 
         self.opened = False
         self.opened_filepath = ''
@@ -93,9 +85,6 @@ class WindowClass(QMainWindow, form_class):
 
     def pasteFunction(self):
         self.plainTextEdit.paste()
-
-    def findFunction(self):
-        FindWindow(self)
 
 app = QApplication(sys.argv)
 mainwindow = WindowClass()
