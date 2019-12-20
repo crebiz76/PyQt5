@@ -445,11 +445,17 @@
          <verstretch>0</verstretch>
         </sizepolicy>
        </property>
+       <property name="layoutDirection">
+        <enum>Qt::RightToLeft</enum>
+       </property>
        <property name="inputMethodHints">
         <set>Qt::ImhNone</set>
        </property>
        <property name="frame">
         <bool>true</bool>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
        </property>
       </widget>
      </item>
@@ -460,6 +466,14 @@
          <horstretch>0</horstretch>
          <verstretch>0</verstretch>
         </sizepolicy>
+       </property>
+       <property name="font">
+        <font>
+         <family>Arial</family>
+         <pointsize>16</pointsize>
+         <weight>75</weight>
+         <bold>true</bold>
+        </font>
        </property>
        <property name="layoutDirection">
         <enum>Qt::RightToLeft</enum>

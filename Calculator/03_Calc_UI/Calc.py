@@ -58,13 +58,20 @@ class WindowClass(QMainWindow, form_class):
         self.inVal = inval
         if self.inVal == '0':
             if self.operate == False:
-                self.lineEdit_input.setText(self.lineEdit_input.text() + self.inVal)
+                #self.lineEdit_input.setText(self.lineEdit_input.text() + self.inVal)
+                self.lineEdit_result.setText(self.lineEdit_result.text() + self.inVal)
                 self.operate = False
                 print(self.inVal, self.operate)
         else:
-            self.lineEdit_input.setText(self.lineEdit_input.text() + self.inVal)
-            self.operate = False
-            print(self.inVal, self.operate)
+            if self.operate == True:
+                self.lineEdit_result.setText('')    
+                self.lineEdit_result.setText(self.inVal)
+                self.operate = False
+            else:
+                #self.lineEdit_input.setText(self.lineEdit_input.text() + self.inVal)
+                self.lineEdit_result.setText(self.lineEdit_result.text() + self.inVal)
+                self.operate = False
+                # print(self.inVal, self.operate)
 
     def keyReleaseEvent(self, e): 
         print(self.lineEdit_input.text())
