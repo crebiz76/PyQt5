@@ -63,7 +63,6 @@ class WindowClass(QMainWindow, form_class):
                 self.op_pre = self.inVal
 
                 self.lineEdit_input.setText(self.lineEdit_input.text() + self.lineEdit_result.text() + self.inVal)
-                # self.lineEdit_result.setText(str(self.result))
                 self.ResultDisplay()
 
                 self.operate = True
@@ -100,31 +99,18 @@ class WindowClass(QMainWindow, form_class):
     def InputButton_point(self):   print("point")
     def InputButton_sign(self):    print("sign")
 
-    def InputButton_equal(self):        
-        print("equal")
-        self.OperatorDisplay('=')
-        
-    def InputButton_plus(self): 
-        print("plus")
-        self.OperatorDisplay('+')        
-
-    def InputButton_minus(self):
-        print("minus")
-        self.OperatorDisplay('-')
-        
-    def InputButton_multiply(self):
-        print("multiply")
-        self.OperatorDisplay('×')
-        
-    def InputButton_division(self):
-        print("division")
-        self.OperatorDisplay('÷')
+    def InputButton_equal(self):    self.OperatorDisplay('=')
+    def InputButton_plus(self):     self.OperatorDisplay('+')        
+    def InputButton_minus(self):    self.OperatorDisplay('-')
+    def InputButton_multiply(self): self.OperatorDisplay('×')
+    def InputButton_division(self): self.OperatorDisplay('÷')
         
     def InputButton_BS(self):   print("BS")
     def InputButton_C(self):
-        self.Initialization()
+        self.Clear()
         
-    def InputButton_CE(self):   print("CE")
+    def InputButton_CE(self):   
+        self.ClearEntity()
 
     def lineEdit_inputChanged(self):
         self.statusBar.showMessage(self.lineEdit_input.text())
@@ -135,7 +121,7 @@ class WindowClass(QMainWindow, form_class):
     def ResultDisplay(self):
         self.lineEdit_result.setText(str(self.result))
 
-    def Initialization(self):
+    def Clear(self):
         # Initialization
         self.operate = True
         self.result = 0
@@ -144,6 +130,10 @@ class WindowClass(QMainWindow, form_class):
         self.point = False
         self.ResultDisplay()
         self.lineEdit_input.setText('')
+
+    def ClearEntity(self):
+        self.operate = True
+        self.lineEdit_result.setText('0')
 
 if __name__ == "__main__":
     App = QApplication(sys.argv)
