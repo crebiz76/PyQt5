@@ -1,12 +1,15 @@
 import sys
-from PyQt5.QtWidgets import *
+# from PyQt5.QtWidgets import *
+from PyQt5 import QtWidgets
 from PyQt5 import uic
-from PyQt5.QtGui import QTextCursor
+
+# from PyQt5.QtGui import QTextCursor
+from PyQt5 import QtGui
 from PyQt5 import QtCore
 
 form_class = uic.loadUiType(r"C:\Users\crebi\Documents\GitHub\PyQt5\Designer\17_Notepad_InformationBox\notepad.ui")[0]
 
-class FindWindow(QDialog):
+class FindWindow(QtWidgets.QDialog):
     def __init__(self, parent):
         super(FindWindow, self).__init__(parent)
         uic.loadUi(r"C:\Users\crebi\Documents\GitHub\PyQt5\Designer\17_Notepad_InformationBox\find.ui", self)
@@ -68,12 +71,12 @@ class FindWindow(QDialog):
         print(pos, index, self.up_down)
 
     def NotFoundMsg(self, pattern):
-        msgBox = QMessageBox()
+        msgBox = QtWidgets.QMessageBox()
         msgBox.setWindowTitle("메모장")
-        msgBox.setIcon(QMessageBox.Information)
+        msgBox.setIcon(QtWidgets.QMessageBox.Information)
         msgBox.setText("'"'{}'"'을(를) 찾을 수 없습니다.".format(pattern))
-        msgBox.addButton("확인", QMessageBox.YesRole)
-        ret = msgBox.exec_()
+        msgBox.addButton("확인", QtWidgets.QMessageBox.YesRole)
+        msgBox.exec_()
 
     def setCursor(self, start, end):
         print(self.cursor.selectionStart(), self.cursor.selectionEnd())
@@ -81,13 +84,13 @@ class FindWindow(QDialog):
         # self.cursor.movePosition(QTextCursor.Right, QTextCursor.KeepAnchor, end-start)
         # self.pTE.setTextCursor(self.cursor)
         if self.up_down == False:
-            self.cursor.movePosition(QTextCursor.Right, QTextCursor.KeepAnchor, end-start)
+            self.cursor.movePosition(QtGui.QTextCursor.Right, QtGui.QTextCursor.KeepAnchor, end-start)
             self.pTE.setTextCursor(self.cursor)
         else:
-            self.cursor.movePosition(QTextCursor.Left, QTextCursor.KeepAnchor, end-start)
+            self.cursor.movePosition(QtGui.QTextCursor.Left, QtGui.QTextCursor.KeepAnchor, end-start)
             self.pTE.setTextCursor(self.cursor)              
 
-class WindowClass(QMainWindow, form_class):
+class WindowClass(QtWidgets.QMainWindow, form_class):
     def __init__(self):
         super().__init__()
         self.setupUi(self)
@@ -120,11 +123,11 @@ class WindowClass(QMainWindow, form_class):
         else: return True
 
     def save_changed_data(self):
-        msgBox = QMessageBox()
+        msgBox = QtWidgets.QMessageBox()
         msgBox.setText("변경내용을 {}에 저장하시겠습니까?".format(self.opened_filepath))
-        msgBox.addButton("저장", QMessageBox.YesRole)
-        msgBox.addButton("저장 안 함", QMessageBox.NoRole)
-        msgBox.addButton("취소", QMessageBox.RejectRole)
+        msgBox.addButton("저장", QtWidgets.QMessageBox.YesRole)
+        msgBox.addButton("저장 안 함", QtWidgets.QMessageBox.NoRole)
+        msgBox.addButton("취소", QtWidgets.QMessageBox.RejectRole)
         ret = msgBox.exec_()
         if ret == 0: self.saveFunction()
         else: return ret
@@ -157,9 +160,9 @@ class WindowClass(QMainWindow, form_class):
     
     def openFunction(self):
         if self.isChanged():
-            ret = self.save_changed_data()
+            self.save_changed_data()
             
-        fname = QFileDialog.getOpenFileName(self)
+        fname = QtWidgets.QFileDialog.getOpenFileName(self)
         if fname[0]:
             self.open_file(fname[0])
 
@@ -170,7 +173,7 @@ class WindowClass(QMainWindow, form_class):
             self.saveAsFunction()
     
     def saveAsFunction(self):
-        fname = QFileDialog.getSaveFileName(self)
+        fname = QtWidgets.QFileDialog.getSaveFileName(self)
         if fname[0]:
             self.save_file(fname[0])
     
@@ -189,7 +192,7 @@ class WindowClass(QMainWindow, form_class):
     def findFunction(self):
         FindWindow(self)
 
-app = QApplication(sys.argv)
+app = QtWidgets.QApplication(sys.argv)
 mainwindow = WindowClass()
 mainwindow.show()
 app.exec_()
