@@ -41,12 +41,10 @@ class WindowClass(QtWidgets.QMainWindow, form_class):
             print('Execute!')
     
     def DataClear(self):
-        self.lstLine = []
         self.lstStrings = []
         self.lstDisplay = []
         self.plainTextEdit_Out.clear()
         print("Clear!")
-        pass
 
     def execFunction(self):
         paragraph = 0
@@ -59,7 +57,7 @@ class WindowClass(QtWidgets.QMainWindow, form_class):
         # Error Check
         self.ErrorCheck()
        
-        # Parsing
+        # Data Parsing
         self.lstLine = self.strData.split('\n')
         for i in self.lstLine:
             if i == '' and paragraph == 1:
@@ -74,18 +72,37 @@ class WindowClass(QtWidgets.QMainWindow, form_class):
         text = " ".join(self.lstStrings)
         conditions = text.split(',')
         
-        # Exchange
+        # Partitioning
         seqs = []; conds = []; outs = []
         for i in conditions:
             seq = i.partition('.')[0]
-            cond = i.partition('.')[2]    
+            cond = i.partition('.')[2].partition('/')[0]   
             out = i.partition('/')[2]
             
             seqs.append(seq); conds.append(cond); outs.append(out)
         del seqs[-1]; del conds[-1]; del outs[-1]
-        print(seq, seqs)
-        # Display
+        
+        # Event Handling
+        for i in range(len(conds)):
+            event = conds[i]
+            if '@' in event:
+                conds[i] = event.replace('@', 'Event_')
+
+        # Disply
         for i in range(len(seqs)):
+            if seqs[i] == 1:
+                temp = 'if'
+            else: 
+                temp = 'else if'
+            conds[i] = temp + '(' + conds[i] + ')'
+            conds[i] = conds[i].replace('(', '((')
+            conds[i] = conds[i].replace(')', '))')
+            conds[i] = conds[i].replace('&&', ') && (')
+            conds[i] = conds[i].replace('||', ') || (')
+            
+            outs[i] = outs[i].replace('/','\n')
+            outs[i] = '{\n' + outs[i] + '\n}'
+
             self.strOutput = '//' + seqs[i] + '\n' + conds[i] + '\n' + outs[i] + '\n'
             self.lstDisplay.append(self.strOutput)
 
