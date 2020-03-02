@@ -4,7 +4,7 @@ from PyQt5 import QtWidgets
 from PyQt5.QtWidgets import QMessageBox
 from PyQt5 import uic
 
-form_class = uic.loadUiType(r"C:\Users\crebi\Documents\GitHub\PyQt5\Exchanger\05_Copy\exchanger.ui")[0]
+form_class = uic.loadUiType(r"C:\Users\crebi\Documents\GitHub\PyQt5\Exchanger\03_Execute\exchanger.ui")[0]
 
 class WindowClass(QtWidgets.QMainWindow, form_class):
     def __init__(self):
@@ -77,21 +77,26 @@ class WindowClass(QtWidgets.QMainWindow, form_class):
         seqs = []; conds = []; outs = []
         for i in conditions:
             seq = i.partition('.')[0]
-            cond = i.partition('.')[2].partition('/')[0]   
-            out = i.partition('/')[2]
-            
+            if '/' in i:
+                cond = i.partition('.')[2].partition('/')[0]   
+                out = i.partition('/')[2]
+            else:
+                cond = i.partition('.')[2]
+                out = 'No Action'
             seqs.append(seq); conds.append(cond); outs.append(out)
-        del seqs[-1]; del conds[-1]; del outs[-1]
-        
+            
+        if len(seqs) > 1:
+            del seqs[-1]; del conds[-1]; del outs[-1]
+
         # Event Handling
         for i in range(len(conds)):
             event = conds[i]
             if '@' in event:
                 conds[i] = event.replace('@', 'Event_')
-
+        
         # Disply
         for i in range(len(seqs)):
-            if seqs[i] == 1:
+            if seqs[i] == '1':
                 temp = 'if'
             else: 
                 temp = 'else if'
@@ -100,13 +105,12 @@ class WindowClass(QtWidgets.QMainWindow, form_class):
             conds[i] = conds[i].replace(')', '))')
             conds[i] = conds[i].replace('&&', ') && (')
             conds[i] = conds[i].replace('||', ') || (')
-            
+
             outs[i] = outs[i].replace('/','\n')
             outs[i] = '{\n' + outs[i] + '\n}'
-
             self.strOutput = '//' + seqs[i] + '\n' + conds[i] + '\n' + outs[i] + '\n'
             self.lstDisplay.append(self.strOutput)
-
+                
         text = " ".join(self.lstDisplay)
         self.plainTextEdit_Out.setPlainText(text)
 
@@ -127,8 +131,8 @@ class WindowClass(QtWidgets.QMainWindow, form_class):
         else:
             print("Not Closed!")
 
-if __name__ == '__main__':      
-    app = QtWidgets.QApplication(sys.argv)
-    mainwindow = WindowClass()
-    mainwindow.show()
-    app.exec_()
+if __name__ == "__main__":        
+  app = QtWidgets.QApplication(sys.argv)
+  mainwindow = WindowClass()
+  mainwindow.show()
+  app.exec_()
