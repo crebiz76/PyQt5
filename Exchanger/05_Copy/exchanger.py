@@ -36,8 +36,10 @@ class WindowClass(QtWidgets.QMainWindow, form_class):
 
     def ErrorCheck(self):
         if self.strData == "":  
-            print('Error!')
             self.strData = 'Error!'
+            reply = QMessageBox.information(self, 'Error', "There is no input.", QMessageBox.Ok, QMessageBox.Ok)
+            if reply == QMessageBox.Ok:
+                print('Error!')
         else:
             print('Execute!')
     
@@ -100,7 +102,34 @@ class WindowClass(QtWidgets.QMainWindow, form_class):
             conds[i] = conds[i].replace(')', '))')
             conds[i] = conds[i].replace('&&', ') && (')
             conds[i] = conds[i].replace('||', ') || (')
-            
+
+            if conds[i].count('(') != conds[i].count(')'):
+                reply = QMessageBox.information(self, 'Error', 
+                "The condition {} has error.".format(seqs[i]), QMessageBox.Ok, QMessageBox.Ok)
+                if reply == QMessageBox.Ok:
+                    print('Condition Error!')
+
+            operator = '&'
+            if conds[i].count(operator) % 2 != 0:
+                reply = QMessageBox.information(self, 'Error', 
+                "The operator({}) of condition{} have one or more errors.".format(operator, seqs[i]), QMessageBox.Ok, QMessageBox.Ok)
+                if reply == QMessageBox.Ok:
+                    print('Operator {} Error!'.format(operator))
+
+            operator = '|'
+            if conds[i].count(operator) % 2 != 0:
+                reply = QMessageBox.information(self, 'Error', 
+                "The operator({}) of condition{} have one or more errors.".format(operator, seqs[i]), QMessageBox.Ok, QMessageBox.Ok)
+                if reply == QMessageBox.Ok:
+                    print('Operator {} Error!'.format(operator))
+
+            operator = '='
+            if conds[i].count(operator) % 2 != 0:
+                reply = QMessageBox.information(self, 'Error', 
+                "The operator({}) of condition{} have one or more errors.".format(operator, seqs[i]), QMessageBox.Ok, QMessageBox.Ok)
+                if reply == QMessageBox.Ok:
+                    print('Operator {} Error!'.format(operator))
+
             outs[i] = outs[i].replace('/','\n')
             outs[i] = '{\n' + outs[i] + '\n}'
 
